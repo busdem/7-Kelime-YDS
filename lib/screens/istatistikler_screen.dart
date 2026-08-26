@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../kelimeler.dart';
 import '../state/global_state.dart';
 import '../state/rozetler.dart';
+import '../state/tekrar_takvimi.dart';
 
 // --- İSTATİSTİKLER VE İLERLEME EKRANI ---
 class IstatistiklerScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class IstatistiklerScreen extends StatelessWidget {
         .map((k) => k['word'])
         .toSet()
         .length;
-    int tekrarSayisi = tekrarEdilecekKelimeler.length;
+    int tekrarSayisi = siraGelenKelimeleriGetir().length;
 
     // Yüzde hesaplama (0.0 ile 1.0 arası)
     double ilerlemeOrani = toplamKelime > 0

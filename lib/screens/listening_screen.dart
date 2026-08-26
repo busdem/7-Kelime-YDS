@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 import '../state/global_state.dart';
+import '../state/tekrar_takvimi.dart';
 import '../services/quiz_generator.dart';
 import '../services/tts_service.dart';
 import 'quiz_screen.dart';
@@ -61,7 +60,7 @@ class _ListeningQuizScreenState extends State<ListeningQuizScreen> {
     String cevap,
     String dogruCevap,
     Map<String, String> kelime,
-  ) async {
+  ) {
     // İŞTE KORUMA KALKANIMIZ!
     // Eğer şık daha önce seçildiyse aşağıyı hiç okuma ve durdur:
     if (_cevapVerildi) return;
@@ -71,22 +70,9 @@ class _ListeningQuizScreenState extends State<ListeningQuizScreen> {
       _secilenCevap = cevap;
       if (cevap == dogruCevap) {
         _dogruSayisi++;
-      } else {
-        // Yanlış bilindiyse otomatik olarak Tekrar Et havuzuna ekle
-        if (!tekrarEdilecekKelimeler.any((k) => k['word'] == kelime['word'])) {
-          tekrarEdilecekKelimeler.add(kelime);
-        }
       }
+      tekrarTakviminiGuncelle(kelime['word'] ?? '', cevap == dogruCevap);
     });
-
-    // KAYDETME İŞLEMİ (setState'in dışında, sorunsuz çalışacak)
-    if (cevap != dogruCevap) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        'tekrarKelimeleri',
-        jsonEncode(tekrarEdilecekKelimeler),
-      );
-    }
   }
 
   void _sonrakiSoru() {

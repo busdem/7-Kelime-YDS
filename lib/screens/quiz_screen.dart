@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 import '../state/global_state.dart';
 import '../state/rozetler.dart';
+import '../state/tekrar_takvimi.dart';
 import '../services/quiz_generator.dart';
 
 // --- QUIZ (SINAV) EKRANI ---
@@ -35,8 +34,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _sinaviBaslat() {
     if (widget.isTekrarTesti) {
-      // Tekrar Testi: sadece 'Çalışmam Gerekenler' listesindeki kelimelerden sorulur
-      var kopyaTekrar = List<Map<String, String>>.from(tekrarEdilecekKelimeler)
+      // Tekrar Testi: sadece sırası gelmiş (aralıklı tekrar takvimindeki) kelimelerden sorulur
+      var kopyaTekrar = List<Map<String, String>>.from(siraGelenKelimeleriGetir())
         ..shuffle();
       _aktifSorular = dinamikSoruUret(kopyaTekrar);
     } else if (widget.isDailyTest) {
@@ -58,7 +57,7 @@ class _QuizScreenState extends State<QuizScreen> {
     String cevap,
     String dogruCevap,
     Map<String, String> kelime,
-  ) async {
+  ) {
     // İŞTE KORUMA KALKANIMIZ!
     // Eğer şık daha önce seçildiyse aşağıyı hiç okuma ve durdur:
     if (_cevapVerildi) return;
@@ -68,28 +67,9 @@ class _QuizScreenState extends State<QuizScreen> {
       _secilenCevap = cevap;
       if (cevap == dogruCevap) {
         _dogruSayisi++;
-        // Tekrar Testinde doğru bilinen kelime, çalışılacaklar listesinden çıkar
-        if (widget.isTekrarTesti) {
-          tekrarEdilecekKelimeler.removeWhere(
-            (k) => k['word'] == kelime['word'],
-          );
-        }
-      } else {
-        // Yanlış bilindiyse otomatik olarak Tekrar Et havuzuna ekle
-        if (!tekrarEdilecekKelimeler.any((k) => k['word'] == kelime['word'])) {
-          tekrarEdilecekKelimeler.add(kelime);
-        }
       }
+      tekrarTakviminiGuncelle(kelime['word'] ?? '', cevap == dogruCevap);
     });
-
-    // KAYDETME İŞLEMİ (setState'in dışında, sorunsuz çalışacak)
-    if (cevap != dogruCevap || widget.isTekrarTesti) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        'tekrarKelimeleri',
-        jsonEncode(tekrarEdilecekKelimeler),
-      );
-    }
   }
 
   void _sonrakiSoru() {

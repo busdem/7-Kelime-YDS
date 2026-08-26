@@ -7,8 +7,6 @@ import 'rozetler.dart';
 // --- KÜRESEL HAFIZA HAVUZLARI ---
 List<Map<String, String>> ogrenilenKelimeler =
     []; // Genel Quiz buradaki kelimelerden sorulacak
-List<Map<String, String>> tekrarEdilecekKelimeler =
-    []; // Yanlış bilinenler buraya düşecek
 
 List<Map<String, String>> gunlukKelimelerHafizasi = [];
 List<Map<String, dynamic>> gunlukTestSorulari =

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../state/global_state.dart';
+import '../state/tekrar_takvimi.dart';
 import 'quiz_screen.dart';
 import 'flashcard_screen.dart';
 
@@ -16,6 +16,7 @@ class TekrarEtScreen extends StatefulWidget {
 class _TekrarEtScreenState extends State<TekrarEtScreen> {
   @override
   Widget build(BuildContext context) {
+    final kelimelerListesi = siraGelenKelimeleriGetir();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -30,7 +31,7 @@ class _TekrarEtScreenState extends State<TekrarEtScreen> {
       ),
       body: Column(
         children: [
-          if (tekrarEdilecekKelimeler.isNotEmpty)
+          if (kelimelerListesi.isNotEmpty)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: SizedBox(
@@ -68,7 +69,7 @@ class _TekrarEtScreenState extends State<TekrarEtScreen> {
               ),
             ),
           Expanded(
-            child: tekrarEdilecekKelimeler.isEmpty
+            child: kelimelerListesi.isEmpty
                 ? const Center(
                     child: Text(
                       'Harika gidiyorsun!\nŞu an tekrar etmen gereken\nbir kelime yok. ',
@@ -78,9 +79,9 @@ class _TekrarEtScreenState extends State<TekrarEtScreen> {
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: tekrarEdilecekKelimeler.length,
+                    itemCount: kelimelerListesi.length,
                     itemBuilder: (context, index) {
-                      final kelime = tekrarEdilecekKelimeler[index];
+                      final kelime = kelimelerListesi[index];
                       return Card(
                         margin: const EdgeInsets.only(bottom: 12),
                         shape: RoundedRectangleBorder(

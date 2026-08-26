@@ -5,7 +5,9 @@ import 'dart:convert';
 import '../kelimeler.dart';
 import '../state/global_state.dart';
 import '../state/rozetler.dart';
+import '../state/tekrar_takvimi.dart';
 import '../services/quiz_generator.dart';
+import '../services/bildirim_servisi.dart';
 import 'quiz_screen.dart';
 import 'flashcard_screen.dart';
 import 'tekrar_et_screen.dart';
@@ -30,10 +32,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _verileriHafizadanYukle(); // Uygulama açıldığında ilk iş hafızayı okuyacağız!
+    _bildirimleriKur();
+  }
+
+  // initState senkron olduğu için bildirim kurulumu ayrı bir async
+  // fonksiyonda yapılır. İzin reddedilirse veya platform desteklemezse
+  // uygulama çökmesin diye hatalar burada yutulur.
+  Future<void> _bildirimleriKur() async {
+    try {
+      await bildirimleriBaslat();
+      await gunlukHatirlatmayiZamanla();
+    } catch (_) {
+      // Bildirim izni verilmediyse veya kurulum başarısız olduysa
+      // uygulamanın geri kalanını etkilemeden sessizce devam et.
+    }
   }
 
   Future<void> _verileriHafizadanYukle() async {
     final prefs = await SharedPreferences.getInstance();
+    await tekrarTakviminiYukle();
 
     setState(() {
       // 1. KOLEKSİYONLARI GERİ GETİR
@@ -59,15 +76,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               .toList();
           prefs.setString('koleksiyonlarim', jsonEncode(koleksiyonlar));
         }
-      }
-
-      // 2. TEKRAR EDİLECEK KELİMELERİ GERİ GETİR
-      String? kayitliTekrar = prefs.getString('tekrarKelimeleri');
-      if (kayitliTekrar != null) {
-        List<dynamic> cozulmusTekrar = jsonDecode(kayitliTekrar);
-        tekrarEdilecekKelimeler = cozulmusTekrar
-            .map((item) => Map<String, String>.from(item))
-            .toList();
       }
 
       // --- 3. ÖĞRENİLEN KELİMELERİ GERİ GETİR VE ÇİFTLERİ TEMİZLE ---
@@ -101,10 +109,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       int kaydedilenGun = prefs.getInt('sonGirisGunu') ?? -1;
 
       if (kaydedilenGun != bugun) {
-        var kopyaListe = List<Map<String, String>>.from(ydsKelimeleri)
-          ..shuffle();
+        var ogrenilmemisHavuz = ydsKelimeleri
+            .where((k) => !ogrenilenKelimeler.any((o) => o['word'] == k['word']))
+            .toList();
+        var kopyaListe =
+            (ogrenilmemisHavuz.length >= 7 ? ogrenilmemisHavuz : ydsKelimeleri)
+                .toList()
+              ..shuffle();
         gunlukKelimelerHafizasi = kopyaListe.take(7).toList();
 
+        bool yeniTekrarVarMi = false;
         for (var kelime in gunlukKelimelerHafizasi) {
           // 'word' yani İngilizce kelimenin metnine bakarak kontrol ediyoruz!
           bool zatenVarMi = ogrenilenKelimeler.any(
@@ -112,7 +126,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           );
           if (!zatenVarMi) {
             ogrenilenKelimeler.add(kelime);
+            kelimeyiTekrarTakvimineEkle(kelime['word'] ?? '');
+            yeniTekrarVarMi = true;
           }
+        }
+        if (yeniTekrarVarMi) {
+          tekrarTakviminiKaydet();
         }
 
         gunlukTestSorulari = dinamikSoruUret(gunlukKelimelerHafizasi);
@@ -139,11 +158,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             );
             if (!zatenVarMi) {
               ogrenilenKelimeler.add(kelime);
+              kelimeyiTekrarTakvimineEkle(kelime['word'] ?? '');
               yeniOgrenilenVarMi = true;
             }
           }
           if (yeniOgrenilenVarMi) {
             prefs.setString('ogrenilenler', jsonEncode(ogrenilenKelimeler));
+            tekrarTakviminiKaydet();
           }
         }
       }
