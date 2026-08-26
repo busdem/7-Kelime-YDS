@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../state/global_state.dart';
+import '../state/tema_state.dart';
 import '../services/tts_service.dart';
 
 class FlashcardHomeScreen extends StatefulWidget {
@@ -94,88 +95,99 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
 
   Widget _buildFrontCard(Map<String, String> kelime) {
     List<String> uyeOlduguKoleksiyonlar = kelimeninKoleksiyonlari(kelime);
-    return Card(
+    return ValueListenableBuilder<String>(
       key: const ValueKey(true),
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      color: const Color(0xFF8BA88E),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      elevation: 6,
-      child: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // YENİ: Kelime ve yanına hoparlör butonu
-                Row(
+      valueListenable: temaPaletiBildirici,
+      builder: (context, paletAnahtari, _) {
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          color: temaPaletiRenkleri[paletAnahtari]!,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          elevation: 6,
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min, // Merkeze sıkıca topla
                   children: [
-                    // İŞTE SİHİR BURADA: Uzun kelimeleri taşırmak yerine alt satıra atar
-                    Flexible(
-                      child: Text(
-                        kelime['word'] ?? '',
-                        style: const TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    // YENİ: Kelime ve yanına hoparlör butonu
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min, // Merkeze sıkıca topla
+                      children: [
+                        // İŞTE SİHİR BURADA: Uzun kelimeleri taşırmak yerine alt satıra atar
+                        Flexible(
+                          child: Text(
+                            kelime['word'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign
+                                .center, // Alt satıra inerse ortalı dursun
+                          ),
                         ),
-                        textAlign:
-                            TextAlign.center, // Alt satıra inerse ortalı dursun
-                      ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.volume_up,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                          onPressed: () {
+                            // Tıklanınca yukarıda yazdığımız motor çalışır
+                            metniSeslendir(kelime['word'] ?? '');
+                          },
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
-                        color: Colors.white,
-                        size: 36,
-                      ),
-                      onPressed: () {
-                        // Tıklanınca yukarıda yazdığımız motor çalışır
-                        metniSeslendir(kelime['word'] ?? '');
-                      },
+                    const SizedBox(height: 24),
+                    const Icon(
+                      Icons.touch_app,
+                      color: Colors.white70,
+                      size: 36,
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Anlamı görmek için dokun',
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
-                const Icon(Icons.touch_app, color: Colors.white70, size: 36),
-                const SizedBox(height: 12),
-                const Text(
-                  'Anlamı görmek için dokun',
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+              Positioned(
+                top: 16,
+                right: 16,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        uyeOlduguKoleksiyonlar.isNotEmpty
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                      onPressed: () => kelimeKoleksiyonSecimiAc(
+                        context,
+                        kelime,
+                        () => setState(() {}),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: _koleksiyonRozetleri(uyeOlduguKoleksiyonlar),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Positioned(
-            top: 16,
-            right: 16,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    uyeOlduguKoleksiyonlar.isNotEmpty
-                        ? Icons.bookmark
-                        : Icons.bookmark_border,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                  onPressed: () => kelimeKoleksiyonSecimiAc(
-                    context,
-                    kelime,
-                    () => setState(() {}),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: _koleksiyonRozetleri(uyeOlduguKoleksiyonlar),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

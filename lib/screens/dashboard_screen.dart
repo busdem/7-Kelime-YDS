@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'dart:convert';
 
 import '../kelimeler.dart';
 import '../state/global_state.dart';
 import '../state/rozetler.dart';
 import '../state/tekrar_takvimi.dart';
+import '../state/tema_state.dart';
 import '../services/quiz_generator.dart';
 import '../services/bildirim_servisi.dart';
 import 'quiz_screen.dart';
@@ -110,7 +112,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       if (kaydedilenGun != bugun) {
         var ogrenilmemisHavuz = ydsKelimeleri
-            .where((k) => !ogrenilenKelimeler.any((o) => o['word'] == k['word']))
+            .where(
+              (k) => !ogrenilenKelimeler.any((o) => o['word'] == k['word']),
+            )
             .toList();
         var kopyaListe =
             (ogrenilmemisHavuz.length >= 7 ? ogrenilmemisHavuz : ydsKelimeleri)
@@ -503,148 +507,313 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'YDS Kelime Rehberi',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF4A5750),
+    return ValueListenableBuilder<String>(
+      valueListenable: temaPaletiBildirici,
+      builder: (context, paletAnahtari, _) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'YDS Kelime Rehberi',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF4A5750),
+              ),
+            ),
+            backgroundColor: temaPaletiRenkleri[paletAnahtari]!,
+            elevation: 0,
+            centerTitle: true,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.palette, color: Color(0xFF4A5750)),
+                tooltip: 'Tema Seç',
+                onPressed: () => _temaSeciciAc(context),
+              ),
+            ],
           ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Hoş geldin!',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF4A5750),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Bugünün kelimeleri seni bekliyor.',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF6B7B70)),
+                  ),
+                  const SizedBox(height: 32),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.62,
+                    children: [
+                      _buildMenuCard(
+                        title: 'Bugünün\nKelimeleri',
+                        icon: Icons.style,
+                        color: const Color(0xFF8BA88E),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const FlashcardHomeScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'Tekrar Et',
+                        icon: Icons.history,
+                        color: const Color(0xFF9CB4A1),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const TekrarEtScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'Koleksiyonlarım',
+                        icon: Icons.collections_bookmark,
+                        color: const Color(0xFFD69E9E),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const KoleksiyonlarimScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'Quiz (Sınav)',
+                        icon: Icons.quiz_outlined,
+                        color: const Color(0xFFC4B495),
+                        onTap: () => _quizMenusuAc(context),
+                      ),
+                      _buildMenuCard(
+                        title: 'Yazma\nAlıştırması',
+                        icon: Icons.draw_rounded,
+                        color: const Color(0xFF9FB4C7),
+                        onTap: () => _yazmaMenusuAc(context),
+                      ),
+                      _buildMenuCard(
+                        title: 'Dinleme\nAlıştırması',
+                        icon: Icons.headphones,
+                        color: const Color(0xFFF5CBA7),
+                        onTap: () => _dinlemeMenusuAc(context),
+                      ),
+                      _buildMenuCard(
+                        title: 'Kelime Arşivim',
+                        icon: Icons.library_books_rounded,
+                        color: const Color(0xFF7D8C81),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const KelimeArsiviScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'İstatistikler',
+                        icon: Icons.analytics_outlined,
+                        color: const Color(0xFFB4A5A5),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const IstatistiklerScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'Rehber',
+                        icon: Icons.menu_book,
+                        color: const Color(0xFFC4B495),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RehberScreen(),
+                          ),
+                        ),
+                      ),
+                      _buildMenuCard(
+                        title: 'Not Defterlerim',
+                        icon: Icons.edit_note,
+                        color: const Color(0xFFE5C158),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const NotDefterleriScreen(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _temaSeciciAc(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 20),
               const Text(
-                'Hoş geldin!',
+                'Tema Seç',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF4A5750),
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Bugünün kelimeleri seni bekliyor.',
-                style: TextStyle(fontSize: 16, color: Color(0xFF6B7B70)),
+              const SizedBox(height: 20),
+              ValueListenableBuilder<ThemeMode>(
+                valueListenable: temaModuBildirici,
+                builder: (context, mod, _) {
+                  return SegmentedButton<ThemeMode>(
+                    segments: const [
+                      ButtonSegment(
+                        value: ThemeMode.light,
+                        label: Text('Açık'),
+                        icon: Icon(Icons.light_mode),
+                      ),
+                      ButtonSegment(
+                        value: ThemeMode.dark,
+                        label: Text('Koyu'),
+                        icon: Icon(Icons.dark_mode),
+                      ),
+                      ButtonSegment(
+                        value: ThemeMode.system,
+                        label: Text('Sistem'),
+                        icon: Icon(Icons.brightness_auto),
+                      ),
+                    ],
+                    selected: {mod},
+                    onSelectionChanged: (secilenler) {
+                      temaModuBildirici.value = secilenler.first;
+                      temaTercihleriniKaydet();
+                    },
+                  );
+                },
               ),
-              const SizedBox(height: 32),
-              GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.62,
-                children: [
-                  _buildMenuCard(
-                    title: 'Bugünün\nKelimeleri',
-                    icon: Icons.style,
-                    color: const Color(0xFF8BA88E),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const FlashcardHomeScreen(),
-                      ),
-                    ),
+              const SizedBox(height: 28),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Renk Paleti',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF4A5750),
                   ),
-                  _buildMenuCard(
-                    title: 'Tekrar Et',
-                    icon: Icons.history,
-                    color: const Color(0xFF9CB4A1),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const TekrarEtScreen()),
-                    ),
-                  ),
-                  _buildMenuCard(
-                    title: 'Koleksiyonlarım',
-                    icon: Icons.collections_bookmark,
-                    color: const Color(0xFFD69E9E),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const KoleksiyonlarimScreen(),
-                      ),
-                    ),
-                  ),
-                  _buildMenuCard(
-                    title: 'Quiz (Sınav)',
-                    icon: Icons.quiz_outlined,
-                    color: const Color(0xFFC4B495),
-                    onTap: () => _quizMenusuAc(context),
-                  ),
-                  _buildMenuCard(
-                    title: 'Yazma\nAlıştırması',
-                    icon: Icons.draw_rounded,
-                    color: const Color(0xFF9FB4C7),
-                    onTap: () => _yazmaMenusuAc(context),
-                  ),
-                  _buildMenuCard(
-                    title: 'Dinleme\nAlıştırması',
-                    icon: Icons.headphones,
-                    color: const Color(0xFFF5CBA7),
-                    onTap: () => _dinlemeMenusuAc(context),
-                  ),
-                  _buildMenuCard(
-                    title: 'Kelime Arşivim',
-                    icon: Icons.library_books_rounded,
-                    color: const Color(0xFF7D8C81),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const KelimeArsiviScreen(),
-                      ),
-                    ),
-                  ),
-                  _buildMenuCard(
-                    title: 'İstatistikler',
-                    icon: Icons.analytics_outlined,
-                    color: const Color(0xFFB4A5A5),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const IstatistiklerScreen(),
-                      ),
-                    ),
-                  ),
-                  _buildMenuCard(
-                    title: 'Rehber',
-                    icon: Icons.menu_book,
-                    color: const Color(0xFFC4B495),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RehberScreen(),
-                      ),
-                    ),
-                  ),
-                  _buildMenuCard(
-                    title: 'Not Defterlerim',
-                    icon: Icons.edit_note,
-                    color: const Color(0xFFE5C158),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const NotDefterleriScreen(),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ValueListenableBuilder<String>(
+                valueListenable: temaPaletiBildirici,
+                builder: (context, seciliPalet, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: temaPaletiRenkleri.keys
+                        .map(
+                          (anahtar) =>
+                              _buildPaletSecenegi(anahtar, seciliPalet),
+                        )
+                        .toList(),
+                  );
+                },
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPaletSecenegi(String anahtar, String seciliPalet) {
+    Color renk = temaPaletiRenkleri[anahtar]!;
+    bool acikMi = temaPaletiAcikMi(anahtar, ardisikGunSayaci);
+    bool seciliMi = anahtar == seciliPalet;
+
+    return GestureDetector(
+      onTap: acikMi
+          ? () {
+              temaPaletiBildirici.value = anahtar;
+              temaTercihleriniKaydet();
+            }
+          : null,
+      child: Opacity(
+        opacity: acikMi ? 1.0 : 0.5,
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: renk,
+                    shape: BoxShape.circle,
+                    border: seciliMi
+                        ? Border.all(color: const Color(0xFF4A5750), width: 3)
+                        : null,
+                  ),
+                ),
+                if (!acikMi)
+                  const Icon(Icons.lock, color: Colors.white, size: 22),
+                if (seciliMi && acikMi)
+                  const Icon(Icons.check, color: Colors.white, size: 22),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _paletIsmi(anahtar),
+              style: const TextStyle(fontSize: 13, color: Color(0xFF4A5750)),
+            ),
+            if (!acikMi)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text(
+                  '${temaPaletiKilitGunleri[anahtar]} gün üst üste çalış',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                ),
+              ),
+          ],
         ),
       ),
     );
+  }
+
+  String _paletIsmi(String anahtar) {
+    switch (anahtar) {
+      case 'mavi':
+        return 'Mavi';
+      case 'pembe':
+        return 'Pembe';
+      default:
+        return 'Varsayılan';
+    }
   }
 
   Widget _buildMenuCard({
