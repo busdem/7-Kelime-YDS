@@ -221,12 +221,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Quiz Modunu Seçin',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A5750),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 24),
@@ -236,12 +236,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFF8BA88E),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Günün Testi',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text('Bugün öğrendiğin 7 kelimeyi test et.'),
@@ -262,12 +262,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFFC4B495),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Genel Tekrar',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text(
@@ -312,12 +312,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Yazma Alıştırması Modunu Seçin',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A5750),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 24),
@@ -327,12 +327,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFF9FB4C7),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Günün Yazma Alıştırması',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text('Bugün öğrendiğin 7 kelimeyi yaz.'),
@@ -361,12 +361,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFF9FB4C7),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Genel Yazma Alıştırması',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text(
@@ -412,12 +412,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Dinleme Alıştırması Zorluğunu Seçin',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A5750),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 24),
@@ -427,12 +427,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFF9FB4C7),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Kolay (İngilizce şıklar)',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text(
@@ -466,12 +466,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Color(0xFF9FB4C7),
                   size: 32,
                 ),
-                title: const Text(
+                title: Text(
                   'Zor (Türkçe şıklar)',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 subtitle: const Text(
@@ -677,12 +677,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Tema Seç',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A5750),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 20),
@@ -716,14 +716,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
               ),
               const SizedBox(height: 28),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Renk Paleti',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -788,7 +788,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 8),
             Text(
               _paletIsmi(anahtar),
-              style: const TextStyle(fontSize: 13, color: Color(0xFF4A5750)),
+              style: TextStyle(
+                fontSize: 13,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             if (!acikMi)
               Padding(
@@ -827,7 +830,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       borderRadius: BorderRadius.circular(24),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
@@ -853,10 +856,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF4A5750),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

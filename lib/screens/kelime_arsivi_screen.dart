@@ -50,12 +50,12 @@ class _KelimeArsiviScreenState extends State<KelimeArsiviScreen> {
             padding: const EdgeInsets.all(16),
             width: double.infinity,
             color: const Color(0xFF7D8C81).withOpacity(0.1),
-            child: const Text(
+            child: Text(
               'Şu ana kadar öğrendiğin tüm kelimeleri burada bulabilirsin.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                color: Color(0xFF4A5750),
+                color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -105,17 +105,19 @@ class _KelimeArsiviScreenState extends State<KelimeArsiviScreen> {
                         child: ListTile(
                           title: Text(
                             kelime['word'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color: Color(0xFF4A5750),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           subtitle: Text(
                             kelime['meaning'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
-                              color: Color(0xFF6B7B70),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.7),
                             ),
                           ),
                           trailing: const Icon(

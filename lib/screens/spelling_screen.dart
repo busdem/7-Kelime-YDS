@@ -186,7 +186,7 @@ class _SpellingScreenState extends State<SpellingScreen> {
                 horizontal: 20,
               ),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: const Color(0xFF9FB4C7).withOpacity(0.3),
@@ -203,10 +203,10 @@ class _SpellingScreenState extends State<SpellingScreen> {
               child: Text(
                 kelime['meaning'] ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A5750),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
@@ -327,11 +327,11 @@ class _SpellingScreenState extends State<SpellingScreen> {
       borderRengi = const Color(0xFFD98880);
       yaziRengi = Colors.white;
     } else {
-      bgRengi = Colors.white;
+      bgRengi = Theme.of(context).colorScheme.surface;
       borderRengi = havuzIndex != null
           ? const Color(0xFF9FB4C7)
           : Colors.grey.shade300;
-      yaziRengi = const Color(0xFF4A5750);
+      yaziRengi = Theme.of(context).colorScheme.onSurface;
     }
 
     return GestureDetector(

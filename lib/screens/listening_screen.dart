@@ -176,8 +176,8 @@ class _ListeningQuizScreenState extends State<ListeningQuizScreen> {
                 String secenek = secenekler[index];
 
                 // Renk mantığı
-                Color butonRengi = Colors.white;
-                Color yaziRengi = const Color(0xFF4A5750);
+                Color butonRengi = Theme.of(context).colorScheme.surface;
+                Color yaziRengi = Theme.of(context).colorScheme.onSurface;
                 Color borderRengi = Colors.grey.shade300;
                 bool secildiMi = false;
 

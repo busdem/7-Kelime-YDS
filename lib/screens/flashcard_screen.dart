@@ -196,7 +196,6 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
     return Card(
       key: const ValueKey(false),
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: const BorderSide(color: Color(0xFF8BA88E), width: 2),
@@ -213,10 +212,10 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
                   children: [
                     Text(
                       kelime['meaning'] ?? '',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF4A5750),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -232,9 +231,9 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
                       ),
                       child: Text(
                         '${kelime['type']}  •  ${kelime['ipa']}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
-                          color: Color(0xFF4A5750),
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -258,10 +257,10 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
                       children: [
                         Text(
                           kelime['sentence'] ?? '',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontStyle: FontStyle.italic,
-                            color: Color(0xFF4A5750),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -285,9 +284,11 @@ class _FlashcardHomeScreenState extends State<FlashcardHomeScreen> {
                     const SizedBox(height: 12),
                     Text(
                       kelime['translation'] ?? '',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
-                        color: Color(0xFF6B7B70),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.7),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -421,7 +422,6 @@ class _SingleFlashcardScreenState extends State<SingleFlashcardScreen> {
     return Card(
       key: const ValueKey(false),
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: const BorderSide(color: Color(0xFFD69E9E), width: 2),
@@ -438,19 +438,19 @@ class _SingleFlashcardScreenState extends State<SingleFlashcardScreen> {
               children: [
                 Text(
                   widget.kelime['meaning'] ?? '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   '${widget.kelime['type']}  •  ${widget.kelime['ipa']}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -473,10 +473,10 @@ class _SingleFlashcardScreenState extends State<SingleFlashcardScreen> {
                   children: [
                     Text(
                       widget.kelime['sentence'] ?? '',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontStyle: FontStyle.italic,
-                        color: Color(0xFF4A5750),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -499,9 +499,11 @@ class _SingleFlashcardScreenState extends State<SingleFlashcardScreen> {
                 const SizedBox(height: 12),
                 Text(
                   widget.kelime['translation'] ?? '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xFF6B7B70),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.7),
                   ),
                   textAlign: TextAlign.center,
                 ),

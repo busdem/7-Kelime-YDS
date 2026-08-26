@@ -46,7 +46,7 @@ class IstatistiklerScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
@@ -62,12 +62,12 @@ class IstatistiklerScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Genel Hedef İlerlemesi',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF4A5750),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -89,10 +89,10 @@ class IstatistiklerScreen extends StatelessWidget {
                       ),
                       Text(
                         '%$yuzde',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF4A5750),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -100,9 +100,11 @@ class IstatistiklerScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     '$ogrenilenSayisi / $toplamKelime kelime görüntülendi',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
-                      color: Color(0xFF6B7B70),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],
@@ -119,24 +121,28 @@ class IstatistiklerScreen extends StatelessWidget {
               childAspectRatio: 0.85,
               children: [
                 _buildMetricCard(
+                  context,
                   'Öğrenilen',
                   '$ogrenilenSayisi',
                   Icons.school,
                   const Color(0xFF8BA88E),
                 ),
                 _buildMetricCard(
+                  context,
                   'Koleksiyonlarım',
                   '$koleksiyonSayisi',
                   Icons.collections_bookmark,
                   const Color(0xFFD69E9E),
                 ),
                 _buildMetricCard(
+                  context,
                   'Tekrar Edilecek',
                   '$tekrarSayisi',
                   Icons.history,
                   const Color(0xFF9CB4A1),
                 ),
                 _buildMetricCard(
+                  context,
                   'Toplam Havuz',
                   '$toplamKelime',
                   Icons.library_books,
@@ -154,6 +160,7 @@ class IstatistiklerScreen extends StatelessWidget {
   }
 
   Widget _buildMetricCard(
+    BuildContext context,
     String title,
     String value,
     IconData icon,
@@ -162,7 +169,7 @@ class IstatistiklerScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -182,10 +189,10 @@ class IstatistiklerScreen extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF4A5750),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -195,9 +202,9 @@ class IstatistiklerScreen extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF6B7B70),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -211,12 +218,12 @@ class IstatistiklerScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Rozetlerim',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF4A5750),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 4),
@@ -284,7 +291,7 @@ class IstatistiklerScreen extends StatelessWidget {
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: kazanildi
-                    ? const Color(0xFF4A5750)
+                    ? Theme.of(context).colorScheme.onSurface
                     : Colors.grey.shade500,
               ),
             ),
@@ -334,7 +341,10 @@ class IstatistiklerScreen extends StatelessWidget {
           kazanildi
               ? tanim.aciklama
               : '${tanim.aciklama}\n\nBu rozeti henüz kazanmadın.',
-          style: const TextStyle(fontSize: 15, color: Color(0xFF6B7B70)),
+          style: TextStyle(
+            fontSize: 15,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+          ),
         ),
         actions: [
           TextButton(

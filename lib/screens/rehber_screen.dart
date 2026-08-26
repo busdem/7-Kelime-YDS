@@ -51,10 +51,10 @@ class RehberScreen extends StatelessWidget {
           content: SingleChildScrollView(
             child: Text(
               icerik,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 height: 1.4,
-                color: Color(0xFF4A5750),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),

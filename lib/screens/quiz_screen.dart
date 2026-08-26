@@ -135,7 +135,7 @@ class _QuizScreenState extends State<QuizScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: const Color(0xFFC4B495).withOpacity(0.3),
@@ -153,10 +153,10 @@ class _QuizScreenState extends State<QuizScreen> {
               children: [
                 Text(
                   kelime['word'] ?? '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4A5750),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -171,8 +171,8 @@ class _QuizScreenState extends State<QuizScreen> {
                 String secenek = secenekler[index];
 
                 // Renk mantığı
-                Color butonRengi = Colors.white;
-                Color yaziRengi = const Color(0xFF4A5750);
+                Color butonRengi = Theme.of(context).colorScheme.surface;
+                Color yaziRengi = Theme.of(context).colorScheme.onSurface;
                 Color borderRengi = Colors.grey.shade300;
                 bool secildiMi = false;
 

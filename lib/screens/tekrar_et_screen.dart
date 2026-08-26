@@ -95,10 +95,10 @@ class _TekrarEtScreenState extends State<TekrarEtScreen> {
                           ),
                           title: Text(
                             kelime['word'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 22,
-                              color: Color(0xFF4A5750),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           onTap: () {

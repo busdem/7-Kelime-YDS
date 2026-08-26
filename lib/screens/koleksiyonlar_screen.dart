@@ -48,7 +48,7 @@ class _KoleksiyonlarimScreenState extends State<KoleksiyonlarimScreen> {
             borderRadius: BorderRadius.circular(24),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
@@ -67,10 +67,10 @@ class _KoleksiyonlarimScreenState extends State<KoleksiyonlarimScreen> {
                   Text(
                     koleksiyonAdi,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF4A5750),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -196,17 +196,19 @@ class _KoleksiyonDetayScreenState extends State<KoleksiyonDetayScreen> {
                           ),
                           title: Text(
                             kelime['word'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color: Color(0xFF4A5750),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           subtitle: Text(
                             kelime['meaning'] ?? '',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
-                              color: Color(0xFF6B7B70),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.7),
                             ),
                           ),
                           trailing: IconButton(
