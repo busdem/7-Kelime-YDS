@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'state/global_state.dart';
 import 'state/rozetler.dart';
@@ -21,6 +22,7 @@ import 'screens/not_defterleri_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await temaTercihleriniYukle();
+  await MobileAds.instance.initialize();
   runApp(const YdsApp());
 }
 

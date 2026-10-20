@@ -2,10 +2,16 @@
     <!-- Günlük kelime hatırlatma bildirimi için gerekli izinler -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- AdMob reklamlarının yüklenmesi için gerekli -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="7 Kelime YDS"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        <!-- TODO: gerçek AdMob kimlikleriyle değiştir (şu an Google'ın resmi TEST App ID'si) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

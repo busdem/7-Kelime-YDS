@@ -20,6 +20,7 @@ import 'rehber_screen.dart';
 import 'not_defterleri_screen.dart';
 import 'spelling_screen.dart';
 import 'listening_screen.dart';
+import '../widgets/banner_ad_widget.dart';
 
 // --- ANA SAYFA (DASHBOARD) ---
 class DashboardScreen extends StatefulWidget {
@@ -660,6 +661,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
+          bottomNavigationBar: const BannerAdWidget(),
         );
       },
     );

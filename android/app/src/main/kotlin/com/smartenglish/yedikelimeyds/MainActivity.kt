@@ -1,4 +1,4 @@
-package com.example.yds_app
+package com.smartenglish.yedikelimeyds
 
 import io.flutter.embedding.android.FlutterActivity
 
